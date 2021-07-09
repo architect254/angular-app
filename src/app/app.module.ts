@@ -3,16 +3,31 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { RegisterModule } from './register/register.module';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
+import { ErrorInterceptor } from './_helpers/error.interceptor';
+
+const materialModules = [MatSnackBarModule];
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule,
+    BrowserAnimationsModule,
+    ...materialModules,
+    RegisterModule,
   ],
-  providers: [],
-  bootstrap: [AppComponent]
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorInterceptor,
+      multi: true,
+    },
+  ],
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
