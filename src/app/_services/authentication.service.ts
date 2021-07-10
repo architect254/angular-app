@@ -1,13 +1,12 @@
 ﻿import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
+import { ActivatedRoute, Router } from '@angular/router';
 
 import { BehaviorSubject, Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 
 import { JwtHelperService } from '@auth0/angular-jwt';
 
 import jwt_decode from 'jwt-decode';
-import { MatSnackBar } from '@angular/material/snack-bar';
 
 import { User } from '../_models/user';
 import { JwtPayload } from '../_helpers/jwt.payload';
@@ -19,17 +18,24 @@ export class AuthService {
   public currentToken: Observable<any>;
   private jwtHelper = new JwtHelperService();
 
-  constructor(private _http: HttpClient) {
+  constructor(
+    private _http: HttpClient,
+    private _router: Router,
+    private _route: ActivatedRoute
+  ) {
     this.currentTokenSubject = new BehaviorSubject<any>(
-      localStorage.getItem('token')
+      localStorage.getItem('accessToken')
     );
     this.currentToken = this.currentTokenSubject.asObservable();
   }
 
   public get currentTokenUserValue() {
     const token = this.currentTokenSubject.value;
-    const payload: JwtPayload = jwt_decode(token.accessToken);
-    return payload.user;
+    if (token) {
+      const payload: JwtPayload = jwt_decode(token);
+      return payload.user;
+    }
+    return null;
   }
 
   public get currentTokenValue() {
@@ -63,5 +69,6 @@ export class AuthService {
     // remove user from local storage to log user out
     localStorage.removeItem('accessToken');
     this.currentTokenSubject.next(null);
+    this._router.navigate(['../sign-in'], { relativeTo: this._route });
   }
 }

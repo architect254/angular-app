@@ -5,12 +5,14 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { LoginModule } from './login/login.module';
 import { AppComponent } from './app.component';
+import { LoginModule } from './login/login.module';
+import { LayoutModule } from './layout/layout.module';
+import { AppRoutingModule } from './app-routing.module';
 import { RegisterModule } from './register/register.module';
 import { JwtInterceptor } from './_helpers/jwt.interceptor';
-import { AppRoutingModule } from './app-routing.module';
 import { ErrorInterceptor } from './_helpers/error.interceptor';
+import { AuthService } from './_services/authentication.service';
 
 const materialModules = [MatSnackBarModule];
 @NgModule({
@@ -22,9 +24,11 @@ const materialModules = [MatSnackBarModule];
     BrowserAnimationsModule,
     ...materialModules,
     LoginModule,
+    LayoutModule,
     RegisterModule,
   ],
   providers: [
+    AuthService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: ErrorInterceptor,
