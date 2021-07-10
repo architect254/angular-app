@@ -19,7 +19,7 @@ export class AuthService {
   public currentToken: Observable<any>;
   private jwtHelper = new JwtHelperService();
 
-  constructor(private _http: HttpClient,) {
+  constructor(private _http: HttpClient) {
     this.currentTokenSubject = new BehaviorSubject<any>(
       localStorage.getItem('token')
     );
@@ -37,24 +37,31 @@ export class AuthService {
   }
 
   register(name: string, email: string, password: string) {
-    return this._http
-      .post<User>(`${environment.apiUrl}/auth/sign-up`, {
-        name,
-        email,
-        password,
-      });
+    return this._http.post<User>(`${environment.apiUrl}/auth/sign-up`, {
+      name,
+      email,
+      password,
+    });
   }
 
-
+  login(email: string, password: string) {
+    return this._http.post<{ [key: string]: string }>(
+      `${environment.apiUrl}/auth/sign-in`,
+      {
+        email,
+        password,
+      }
+    );
+  }
 
   public isAuthenticated(): boolean {
-    const token = localStorage.getItem('token') || '';
+    const token = localStorage.getItem('accessToken') || '';
     return !this.jwtHelper.isTokenExpired(token);
   }
 
   logout() {
     // remove user from local storage to log user out
-    localStorage.removeItem('token');
+    localStorage.removeItem('accessToken');
     this.currentTokenSubject.next(null);
   }
 }

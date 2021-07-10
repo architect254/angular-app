@@ -9,6 +9,7 @@ import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 import { ErrorInterceptor } from './_helpers/error.interceptor';
+import { LoginModule } from './login/login.module';
 
 const materialModules = [MatSnackBarModule];
 @NgModule({
@@ -19,6 +20,7 @@ const materialModules = [MatSnackBarModule];
     HttpClientModule,
     BrowserAnimationsModule,
     ...materialModules,
+    LoginModule,
     RegisterModule,
   ],
   providers: [

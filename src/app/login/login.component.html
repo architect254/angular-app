@@ -15,8 +15,10 @@
       <ng-container>
         <mat-card>
           <mat-card-title
-            >User registration
-            <a class="redirect" [routerLink]="['/sign-in']">login</a>
+            >User login
+            <a class="redirect" routerLink="/sign-up"
+              >register an account</a
+            >
           </mat-card-title>
           <mat-card-content>
             <form
@@ -24,26 +26,11 @@
               fxLayout="column"
               fxLayoutAlign="start stretch"
               [formGroup]="userForm"
-              (ngSubmit)="register()"
+              (ngSubmit)="login()"
             >
               <mat-form-field class="full-width">
                 <input
-                  type="text"
-                  class="input logins"
-                  placeholder="Name"
-                  formControlName="name"
-                  required
-                  matInput
-                />
-              </mat-form-field>
-              <small
-                class="is-danger"
-                *ngIf="name?.invalid && name?.touched && name?.errors?.required"
-                >email is required</small
-              >
-              <mat-form-field class="full-width">
-                <input
-                  type="text"
+                  type="email"
                   class="input logins"
                   placeholder="Email"
                   formControlName="email"
@@ -58,7 +45,6 @@
                 "
                 >email is required</small
               >
-
               <mat-form-field class="full-width">
                 <input
                   type="password"
@@ -97,36 +83,13 @@
                 "
                 >password is too short</small
               >
-              <mat-form-field class="full-width">
-                <input
-                  type="password"
-                  class="input password"
-                  placeholder="Confirm password"
-                  formControlName="confirmPassword"
-                  required
-                  matInput
-                />
-              </mat-form-field>
-              <small
-                class="is-danger"
-                *ngIf="
-                  confirmPassword?.invalid &&
-                  confirmPassword?.touched &&
-                  confirmPassword?.errors?.required
-                "
-                >confirm password is required</small
-              ><small
-                class="is-danger"
-                *ngIf="confirmPassword?.touched && userForm.errors?.misMatch"
-                >passwords do not match</small
-              >
               <button
                 mat-raised-button
                 color="primary"
                 type="submit"
                 [disabled]="!userForm.valid"
               >
-                Sign up
+                Log in
               </button>
             </form>
           </mat-card-content>
